@@ -10,6 +10,7 @@ public class PlayerMovement : movement
 
         if (Input.GetButton("Jump"))
         {
+            DoJump();  
             _isJumping = true;
         }
         else

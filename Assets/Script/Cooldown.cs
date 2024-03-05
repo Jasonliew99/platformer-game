@@ -23,7 +23,7 @@ public class Cooldown
         }
     }
 
-    public bool IsOnCooldow
+    public bool IsOnCooldown
     {
         get
         {
@@ -49,7 +49,7 @@ public class Cooldown
     public void StopCooldown()
     {
         if (_coroutine != null)
-            CoroutineHost.instance.StopCoroutine(_coroutine);
+            CoroutineHost.Instance.StopCoroutine(_coroutine);
 
         _currentDuration = 0f;
         _isOnCooldown = false;

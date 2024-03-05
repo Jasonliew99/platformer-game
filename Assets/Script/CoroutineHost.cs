@@ -5,7 +5,7 @@ using UnityEngine;
 //this is a singleton of CoroutineHost
 public class CoroutineHost : MonoBehaviour
 {
-    public static CoroutineHost instance
+    public static CoroutineHost Instance
     {
         get
         {
@@ -22,7 +22,11 @@ public class CoroutineHost : MonoBehaviour
                 }
 
                 DontDestroyOnLoad(m_Instance.gameObject);
+
             }
+
+            return m_Instance;
+
         }
     }
 

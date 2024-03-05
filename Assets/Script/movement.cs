@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
 public class movement : MonoBehaviour
@@ -13,12 +14,16 @@ public class movement : MonoBehaviour
     public float GroundCheckRadius = 1f;
     public float MaxSlopeAngle = 45f;
 
+    public Cooldown CoyoteTime;
+    public Cooldown BufferJump;
 
     public LayerMask GroundLayerMask;
 
 
-    private bool _isGrounded = false;
-    private bool _isJumping = false;
+    protected bool _isGrounded = false;
+    protected bool _isJumping = false;
+    protected bool _canJump = true;
+    protected bool _bufferJump = true;
 
     protected Vector2 _inputDirection;
 
@@ -26,6 +31,17 @@ public class movement : MonoBehaviour
     protected Rigidbody2D _rigidbody2D;
     protected Collider2D _collider2D;
 
+    public bool IsJumping
+    {
+        get { return _isJumping; }
+    }
+
+    public bool IsGrounded
+    {
+        get { return _isGrounded;  }
+    }
+
+        
 
     // Start is called before the first frame update
     void Start()
@@ -48,23 +64,35 @@ public class movement : MonoBehaviour
         HandleMovement();
     }
 
-    void HandleInput()
+    protected virtual void HandleInput()
     {
-        _inputDirection = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-
-        if (Input.GetButton("Jump"))
-        {
-            _isJumping = true;
-        }
-        else
-        {
-            _isJumping = false;
-        }
+        
     }
 
-    void DoJump()
+    protected virtual void DoJump()
     {
+        //we need to do cooldown check
+        TryBufferJump();
+
+        if (!_canJump)
+            return;
+
+        if (CoyoteTime.CurrentProgress == Cooldown.Progress.Finished)
+            return;
+
+
+        _canJump = false;
+        _isJumping = true;
+
         _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, JumpForce);
+
+        CoyoteTime.StopCooldown();
+
+    }
+
+    protected void TryBufferJump()
+    {
+        BufferJump.StartCooldown();
     }
 
     void HandleMovement()
@@ -87,13 +115,27 @@ public class movement : MonoBehaviour
     {
         _isGrounded = Physics2D.OverlapCircle(GroundCheck.position, GroundCheckRadius, GroundLayerMask);
 
-        if (_isGrounded)
+        if(_rigidbody2D.velocity.y <= 0)
         {
+            _isJumping = false;
+        }
+
+        if (_isGrounded && !IsJumping)
+        {
+            _canJump = true;
+
+            if (CoyoteTime.CurrentProgress != Cooldown.Progress.Ready)
+                CoyoteTime.StopCooldown();
                 
-            if (_isJumping)
+            if(BufferJump.CurrentProgress is Cooldown.Progress.Started or Cooldown.Progress.InProgress)
             {
                 DoJump();
             }
+
+
         }
+
+        if(!_isGrounded && !_isJumping && CoyoteTime.CurrentProgress == Cooldown.Progress.Ready)
+            CoyoteTime.StartCooldown();
     }
 }
