@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
-public class movement : MonoBehaviour
+public class Movement : MonoBehaviour
 {
     public float Acceleration = 10f;
     public float JumpForce = 50f;
@@ -22,6 +22,7 @@ public class movement : MonoBehaviour
 
     protected bool _isGrounded = false;
     protected bool _isJumping = false;
+    protected bool _isRunning = false;
     protected bool _canJump = true;
     protected bool _bufferJump = true;
 
@@ -41,7 +42,12 @@ public class movement : MonoBehaviour
         get { return _isGrounded;  }
     }
 
-        
+    public bool IsRunning
+    {
+        get { return _isRunning; }
+    }
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -95,7 +101,7 @@ public class movement : MonoBehaviour
         BufferJump.StartCooldown();
     }
 
-    void HandleMovement()
+    protected virtual void HandleMovement()
     {
         Vector3 targetVelocity = Vector3.zero;
 
@@ -109,6 +115,15 @@ public class movement : MonoBehaviour
         }
 
         _rigidbody2D.velocity = targetVelocity;
+
+        if (targetVelocity.x == 0)
+        {
+            _isRunning = false;
+        }
+        else
+        {
+            _isRunning = true;
+        }
     }
 
     void CheckGround()
@@ -119,6 +134,11 @@ public class movement : MonoBehaviour
         {
             _isJumping = false;
         }
+
+        //else
+        //{
+        //    _isRunning = true;
+        //}
 
         if (_isGrounded && !IsJumping)
         {

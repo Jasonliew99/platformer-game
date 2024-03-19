@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMovement : movement
+public class EnemyMovement : Movement
 {
     public Transform Target;
     protected override void HandleInput()

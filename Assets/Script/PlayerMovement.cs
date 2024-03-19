@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : movement
+public class PlayerMovement : Movement
 {
     protected override void HandleInput()
     {
