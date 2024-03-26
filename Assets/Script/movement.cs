@@ -25,6 +25,7 @@ public class Movement : MonoBehaviour
     protected bool _isRunning = false;
     protected bool _canJump = true;
     protected bool _bufferJump = true;
+    protected bool _isFalling = false;
 
     protected Vector2 _inputDirection;
 
@@ -45,10 +46,16 @@ public class Movement : MonoBehaviour
     public bool IsRunning
     {
         get { return _isRunning; }
+
     }
 
+    public bool IsFalling
+    {
+        get { return _isFalling; }
+    }
 
-
+    public bool FlipAnim = false;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -61,6 +68,7 @@ public class Movement : MonoBehaviour
     void Update()
     {
         HandleInput();
+
     }
 
     void FixedUpdate()
@@ -68,6 +76,8 @@ public class Movement : MonoBehaviour
         CheckGround();
 
         HandleMovement();
+
+        Flip();
     }
 
     protected virtual void HandleInput()
@@ -158,4 +168,23 @@ public class Movement : MonoBehaviour
         if(!_isGrounded && !_isJumping && CoyoteTime.CurrentProgress == Cooldown.Progress.Ready)
             CoyoteTime.StartCooldown();
     }
+
+    protected virtual void Flip()
+    {
+        if (_inputDirection.x == 0)
+            return;
+
+        if (_inputDirection.x > 0)
+        {
+            FlipAnim = false;
+        }
+
+        else if (_inputDirection.x < 0)
+        {
+            FlipAnim = true;        
+
+        }
+
+    }
+
 }

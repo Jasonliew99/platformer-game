@@ -33,6 +33,13 @@ public class AnimationHandler : MonoBehaviour
     {
         if (_movement == null)
             return;
+
+        if (_movement.FlipAnim == false)
+            transform.localScale = _initialScale;
+        else
+            transform.localScale = _flipScale;
+
+        //transform.localScale = _movement.FlipAnim ? _FlipScale : _initialScale; same as the one on top
     }
 
     void UpdateAnimator()
@@ -44,6 +51,6 @@ public class AnimationHandler : MonoBehaviour
 
         _animator.SetBool("IsRunning", _movement.IsRunning);
         _animator.SetBool("IsJumping", _movement.IsJumping);
-        //_animator.SetBool("isFalling", _movement.IsFalling);
+        _animator.SetBool("IsFalling", _movement.IsFalling);
     }
 }
