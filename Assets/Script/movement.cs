@@ -13,6 +13,8 @@ public class Movement : MonoBehaviour
     public Transform GroundCheck;
     public float GroundCheckRadius = 1f;
     public float MaxSlopeAngle = 45f;
+    public float walkSpeed;//from yt
+    public float jumpSpeed;//from yt
 
     public Cooldown CoyoteTime;
     public Cooldown BufferJump;
@@ -26,6 +28,12 @@ public class Movement : MonoBehaviour
     protected bool _canJump = true;
     protected bool _bufferJump = true;
     protected bool _isFalling = false;
+
+    private float moveInput;//from yt
+    private bool isTouchingLeft;//from yt
+    private bool isTouchingRight;//from yt
+    private bool wallJumping;//from yt
+    private float touchingLeftOrRight;//from yt
 
     protected Vector2 _inputDirection;
 
@@ -64,11 +72,41 @@ public class Movement : MonoBehaviour
         _collider2D = GetComponent<Collider2D>();
     }
 
+
     // Update is called once per frame
     void Update()
     {
         HandleInput();
 
+        //from yt everything from here
+        isTouchingLeft = Physics2D.OverlapBox(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 0.5f), new Vector2(0.2f, 0.9f), 0f, GroundLayerMask);
+        isTouchingRight = Physics2D.OverlapBox(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 0.5f), new Vector2(0.2f, 0.9f), 0f, GroundLayerMask);
+
+        if (isTouchingLeft)
+        {
+            touchingLeftOrRight = 1;
+        }
+        else if (isTouchingRight)
+        {
+            touchingLeftOrRight = -1;
+        }
+
+        if((!isTouchingLeft && !isTouchingRight) || IsGrounded)
+        {
+            rb.velocity = new Vector2(moveInput* walkSpeed, rb.velocity.y);
+        }
+
+        if(Input.GetKeyDown("space") && (isTouchingRight || isTouchingLeft) && !IsGrounded)
+        {
+            wallJumping = true;
+            Invoke("SetJumpingToFalse", 0.08f);
+        }
+
+        if (wallJumping)
+        {
+            rb.velocity = new Vector2(walkSpeed * touchingLeftOrRight, jumpSpeed);
+        }
+        //to here
     }
 
     void FixedUpdate()
@@ -187,4 +225,20 @@ public class Movement : MonoBehaviour
 
     }
 
+    //here till
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawCube(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 0.5f), new Vector2(1.3f, 0.2f));
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawCube(new Vector2(gameObject.transform.position.x - 0.7f, gameObject.transform.position.y + 0.3f), new Vector2(0.2f, 1.3f));
+        Gizmos.DrawCube(new Vector2(gameObject.transform.position.x + 0.7f, gameObject.transform.position.y + 0.3f), new Vector2(0.2f, 1.3f));
+    }
+
+    void SetJumpingToFalse()
+    {
+        wallJumping = false;
+    }
+    //till here from yt
 }
