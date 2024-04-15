@@ -19,6 +19,7 @@ public class Movement : MonoBehaviour
     public Cooldown BufferJump;
 
     public LayerMask GroundLayerMask;
+    public LayerMask WallLayerMask;
 
 
     protected bool _isGrounded = false;
@@ -41,7 +42,7 @@ public class Movement : MonoBehaviour
 
     public bool IsGrounded
     {
-        get { return _isGrounded;  }
+        get { return _isGrounded; }
     }
 
     public bool IsRunning
@@ -56,7 +57,7 @@ public class Movement : MonoBehaviour
     }
 
     public bool FlipAnim = false;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -84,7 +85,7 @@ public class Movement : MonoBehaviour
 
     protected virtual void HandleInput()
     {
-        
+
     }
 
     protected virtual void DoJump()
@@ -110,9 +111,19 @@ public class Movement : MonoBehaviour
 
     protected virtual void WallJump()
     {
-        
+        TryBufferJump();
 
+        if (!_canJump)
+            return;
 
+        _canJump = false;
+        _isJumping = true;
+
+        // Determine the opposite direction based on the current horizontal velocity
+        float oppositeDirection = -Mathf.Sign(_rigidbody2D.velocity.x);
+
+        // Apply the jump force in the opposite direction
+        _rigidbody2D.velocity = new Vector2(oppositeDirection * Acceleration, JumpForce);
     }
 
     protected void TryBufferJump()
@@ -149,7 +160,7 @@ public class Movement : MonoBehaviour
     {
         _isGrounded = Physics2D.OverlapCircle(GroundCheck.position, GroundCheckRadius, GroundLayerMask);
 
-        if(_rigidbody2D.velocity.y <= 0)
+        if (_rigidbody2D.velocity.y <= 0)
         {
             _isJumping = false;
             //CoyoteTime.StopCooldown();
@@ -168,8 +179,8 @@ public class Movement : MonoBehaviour
 
             if (CoyoteTime.CurrentProgress != Cooldown.Progress.Ready)
                 CoyoteTime.StopCooldown();
-                
-            if(BufferJump.CurrentProgress is Cooldown.Progress.Started or Cooldown.Progress.InProgress)
+
+            if (BufferJump.CurrentProgress is Cooldown.Progress.Started or Cooldown.Progress.InProgress)
             {
                 DoJump();
             }
@@ -177,7 +188,7 @@ public class Movement : MonoBehaviour
 
         }
 
-        if(!_isGrounded && !_isJumping && CoyoteTime.CurrentProgress == Cooldown.Progress.Ready)
+        if (!_isGrounded && !_isJumping && CoyoteTime.CurrentProgress == Cooldown.Progress.Ready)
             CoyoteTime.StartCooldown();
     }
 
@@ -193,9 +204,10 @@ public class Movement : MonoBehaviour
 
         else if (_inputDirection.x < 0)
         {
-            FlipAnim = true;        
+            FlipAnim = true;
 
         }
 
     }
 }
+
