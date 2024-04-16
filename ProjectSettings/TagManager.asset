@@ -5,8 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - boundary
-  - 'Movable Object Killer '
   - Movable Object
+  - Movable Object Killer
   layers:
   - Default
   - TransparentFX

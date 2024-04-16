@@ -9,9 +9,11 @@ public class KillMovableObjects : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
+
+        Debug.Log("test");
         if (!col.CompareTag("Movable Object Killer"))
             return;
 
-        transform.position = respawnPoint.position;
+        transform.position = respawnPoint.position; //respawn point where?
     }
 }

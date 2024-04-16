@@ -19,7 +19,7 @@ public class PlayerMovement : Movement
             _isJumping = false;
         }
 
-        if (Input.GetButton("Fire1"))
+        if (Input.GetButton("Fire2"))
         {
             WallJump();
         }

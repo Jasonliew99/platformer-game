@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    // Variables to control camera behavior
+    // control camera behavior
     private Vector3 offset = new Vector3(0f, 0f, -10f);
-    //time taken for camera to reach player's position, higher = delay following the player itself, lower = fast reaction camera
+    //time taken for camera to reach player's position, higher = delay following player, lower = less delay camera
     private float smoothTime = 0.7f; 
     //velocity used for smoothing
     private Vector3 velocity = Vector3.zero;
