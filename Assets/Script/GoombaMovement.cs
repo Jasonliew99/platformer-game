@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GoombaMovement : Movement
 {
     protected bool FlipDirection = false;
+    public GameObject Player;
+    
 
     protected override void HandleInput()
     {
@@ -26,6 +29,19 @@ public class GoombaMovement : Movement
             return;
 
         FlipDirection = !FlipDirection;
+
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            //Destroy(collision.gameObject); to destroy player
+            SceneManager.LoadScene(1);
+        }
+
+        
+    }
+
 
 }

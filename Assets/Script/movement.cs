@@ -7,7 +7,6 @@ public class Movement : MonoBehaviour
 {
     public float Acceleration = 10f;
     public float JumpForce = 30f;
-    public float WallJumpForce = 30f;
 
 
     //Ground check

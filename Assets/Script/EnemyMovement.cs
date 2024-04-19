@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnemyMovement : Movement
 {
     public Transform Target;
+    public GameObject Player;
+
     protected override void HandleInput()
     {
         if (Target == null)
@@ -21,6 +24,17 @@ public class EnemyMovement : Movement
         _inputDirection = targetDirection;
 
 
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            //Destroy(collision.gameObject); to destroy player
+            SceneManager.LoadScene(1);
+        }
+
+        
     }
 }
 

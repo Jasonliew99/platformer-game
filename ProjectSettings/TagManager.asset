@@ -7,6 +7,8 @@ TagManager:
   - boundary
   - Movable Object
   - Movable Object Killer
+  - Enemy
+  - Enemy Killer
   layers:
   - Default
   - TransparentFX
