@@ -2,14 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Movement : MonoBehaviour
 {
+    [Header("Movement Settings")]
     public float Acceleration = 10f;
     public float JumpForce = 30f;
 
+    [Header("Dashing Settings")]
+    public bool canDash = true;
+    public bool isDashing;
+    public float dashingPower = 24f;
+    public float dashingTime = 0.2f;
+    public float dashingCooldown;
+
+    [Header("Dash Cooldown Bar Settings")]
+    public Image DashBar;
+    public float DashAmount, MaxDash;
+    public float PressCost;
+    public float ChargeRate;
+
+
 
     //Ground check
+    [Header("Ground Check Settings")]
     public Transform GroundCheck;
     public float GroundCheckRadius = 1f;
     public float MaxSlopeAngle = 45f;
@@ -29,7 +46,6 @@ public class Movement : MonoBehaviour
     protected bool _isFalling = false;
 
     protected Vector2 _inputDirection;
-
 
     protected Rigidbody2D _rigidbody2D;
     protected Collider2D _collider2D;
@@ -71,10 +87,29 @@ public class Movement : MonoBehaviour
     {
         HandleInput();
 
+        // Start dash cooldown when not dashing and dash amount is not at max
+        if (!isDashing && DashAmount < MaxDash)
+        {
+            StartCoroutine(DashCooldown());
+        }
+
+        //if (Input.GetKeyDown(KeyCode.C))
+        //{
+        //    Debug.Log("Pressed");
+
+        //    DashAmount -= PressCost;
+        //    if (DashAmount < 0) DashAmount = 0;
+        //    DashBar.fillAmount = DashAmount / MaxDash;
+        //}
     }
 
     void FixedUpdate()
     {
+        if (isDashing)
+        {
+            return;
+        }
+
         CheckGround();
 
         HandleMovement();
@@ -104,25 +139,8 @@ public class Movement : MonoBehaviour
 
         _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, JumpForce);
 
-        CoyoteTime.StopCooldown();//don't need for walljump
+        CoyoteTime.StopCooldown();//don't need for walljump   
 
-    }
-
-    protected virtual void WallJump()
-    {
-        TryBufferJump();
-
-        if (!_canJump)
-            return;
-
-        _canJump = false;
-        _isJumping = true;
-
-        // Determine the opposite direction based on the current horizontal velocity
-        float oppositeDirection = -Mathf.Sign(_rigidbody2D.velocity.x);
-
-        // Apply the jump force in the opposite direction
-        _rigidbody2D.velocity = new Vector2(oppositeDirection * Acceleration, JumpForce);
     }
 
     protected void TryBufferJump()
@@ -206,7 +224,74 @@ public class Movement : MonoBehaviour
             FlipAnim = true;
 
         }
+    }
+
+    protected virtual IEnumerator Dash()
+    {
+        //canDash = false;
+        //isDashing = true;
+        //float originalGravity = _rigidbody2D.gravityScale;
+        //float dashDirection = _inputDirection.x > 0 ? 1f : -1f;
+        //_rigidbody2D.velocity = new Vector2(dashDirection * dashingPower, 0f); // Assign to velocity property
+        //yield return new WaitForSeconds(dashingTime);
+        //_rigidbody2D.gravityScale = originalGravity;
+        //isDashing = false;
+        //yield return new WaitForSeconds(dashingCooldown);
+        //canDash = true;
+
+        canDash = false;
+        isDashing = true;
+        float originalGravity = _rigidbody2D.gravityScale;
+        float dashDirection = _inputDirection.x > 0 ? 1f : -1f;
+        _rigidbody2D.velocity = new Vector2(dashDirection * dashingPower, 0f); // Assign to velocity property
+        yield return new WaitForSeconds(dashingTime);
+        _rigidbody2D.gravityScale = originalGravity;
+        isDashing = false;
+
 
     }
+
+    public IEnumerator DashCooldown()
+    {
+        //while (DashAmount < MaxDash)
+        //{
+        //    DashAmount += MaxDash / dashingCooldown * Time.deltaTime; // Increase dash amount gradually during cooldown
+        //    DashBar.fillAmount = DashAmount / MaxDash;
+        //    yield return null;
+        //}
+
+        float elapsedTime = 0f;
+        float cooldownRate = MaxDash / dashingCooldown; // Rate at which DashAmount increases during cooldown
+
+        while (elapsedTime < dashingCooldown)
+        {
+            DashAmount += cooldownRate * Time.deltaTime; // Increase dash amount gradually during cooldown
+            DashBar.fillAmount = DashAmount / MaxDash;
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure the dash amount reaches the maximum value
+        DashAmount = MaxDash;
+        DashBar.fillAmount = 1f;
+
+        canDash = true; // Enable dashing again after cooldown
+
+    }
+
+    //public IEnumerator RechargeDash()
+    //{
+    //    yield return new WaitForSeconds(2f);
+
+    //    while (DashAmount < MaxDash)
+    //    {
+    //        DashAmount += ChargeRate / 10f;
+    //        if (DashAmount > MaxDash) DashAmount = MaxDash;
+    //        DashBar.fillAmount = DashAmount / MaxDash;
+    //        yield return new WaitForSeconds(.1f);
+    //    }
+
+
+    //}
 }
 

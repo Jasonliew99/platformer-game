@@ -5,13 +5,20 @@ using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 public class PlayerMovement : Movement
 {
+
     protected override void HandleInput()
     {
+        if (isDashing)
+        {
+            return;
+        }
+
         _inputDirection = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
         if (Input.GetButton("Jump"))
         {
-            DoJump();  
+            
+            DoJump();
             _isJumping = true;
         }
         else
@@ -19,9 +26,12 @@ public class PlayerMovement : Movement
             _isJumping = false;
         }
 
-        if (Input.GetButton("Fire2"))
+        if (Input.GetKeyDown(KeyCode.C) && canDash)
         {
-            WallJump();
+            StartCoroutine(Dash());
+
         }
+
+
     }
 }
