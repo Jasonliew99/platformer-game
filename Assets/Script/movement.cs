@@ -228,17 +228,6 @@ public class Movement : MonoBehaviour
 
     protected virtual IEnumerator Dash()
     {
-        //canDash = false;
-        //isDashing = true;
-        //float originalGravity = _rigidbody2D.gravityScale;
-        //float dashDirection = _inputDirection.x > 0 ? 1f : -1f;
-        //_rigidbody2D.velocity = new Vector2(dashDirection * dashingPower, 0f); // Assign to velocity property
-        //yield return new WaitForSeconds(dashingTime);
-        //_rigidbody2D.gravityScale = originalGravity;
-        //isDashing = false;
-        //yield return new WaitForSeconds(dashingCooldown);
-        //canDash = true;
-
         canDash = false;
         isDashing = true;
         float originalGravity = _rigidbody2D.gravityScale;
@@ -247,35 +236,20 @@ public class Movement : MonoBehaviour
         yield return new WaitForSeconds(dashingTime);
         _rigidbody2D.gravityScale = originalGravity;
         isDashing = false;
-
-
+        yield return new WaitForSeconds(dashingCooldown);
+        canDash = true;
     }
 
     public IEnumerator DashCooldown()
     {
-        //while (DashAmount < MaxDash)
-        //{
-        //    DashAmount += MaxDash / dashingCooldown * Time.deltaTime; // Increase dash amount gradually during cooldown
-        //    DashBar.fillAmount = DashAmount / MaxDash;
-        //    yield return null;
-        //}
-
-        float elapsedTime = 0f;
-        float cooldownRate = MaxDash / dashingCooldown; // Rate at which DashAmount increases during cooldown
-
-        while (elapsedTime < dashingCooldown)
+        while (DashAmount < MaxDash)
         {
-            DashAmount += cooldownRate * Time.deltaTime; // Increase dash amount gradually during cooldown
+            DashAmount += MaxDash / dashingCooldown * Time.deltaTime; // Increase dash amount gradually during cooldown
             DashBar.fillAmount = DashAmount / MaxDash;
-            elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        // Ensure the dash amount reaches the maximum value
-        DashAmount = MaxDash;
-        DashBar.fillAmount = 1f;
 
-        canDash = true; // Enable dashing again after cooldown
 
     }
 
