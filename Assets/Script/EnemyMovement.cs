@@ -31,7 +31,7 @@ public class EnemyMovement : Movement
         if (collision.gameObject.tag == "Player")
         {
             //Destroy(collision.gameObject); to destroy player
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
         

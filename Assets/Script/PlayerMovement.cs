@@ -5,7 +5,6 @@ using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 public class PlayerMovement : Movement
 {
-
     protected override void HandleInput()
     {
         if (isDashing)
@@ -17,7 +16,6 @@ public class PlayerMovement : Movement
 
         if (Input.GetButton("Jump"))
         {
-            
             DoJump();
             _isJumping = true;
         }

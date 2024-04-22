@@ -13,7 +13,7 @@ public class KillPlayer2 : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             //Destroy(collision.gameObject); to destroy player
-            SceneManager.LoadScene(2);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
     }

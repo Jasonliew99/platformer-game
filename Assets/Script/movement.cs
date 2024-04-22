@@ -17,13 +17,6 @@ public class Movement : MonoBehaviour
     public float dashingTime = 0.2f;
     public float dashingCooldown;
 
-    [Header("Dash Cooldown Bar Settings")]
-    public Image DashBar;
-    public float DashAmount, MaxDash;
-    public float PressCost;
-    public float ChargeRate;
-
-
 
     //Ground check
     [Header("Ground Check Settings")]
@@ -37,6 +30,8 @@ public class Movement : MonoBehaviour
     public LayerMask GroundLayerMask;
     public LayerMask WallLayerMask;
 
+    AudioSource jumpsound;
+    AudioSource runsound;
 
     protected bool _isGrounded = false;
     protected bool _isJumping = false;
@@ -79,6 +74,7 @@ public class Movement : MonoBehaviour
         //cache our components for later use
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _collider2D = GetComponent<Collider2D>();
+        jumpsound = GetComponent<AudioSource>();
     }
 
 
@@ -86,21 +82,6 @@ public class Movement : MonoBehaviour
     void Update()
     {
         HandleInput();
-
-        // Start dash cooldown when not dashing and dash amount is not at max
-        if (!isDashing && DashAmount < MaxDash)
-        {
-            StartCoroutine(DashCooldown());
-        }
-
-        //if (Input.GetKeyDown(KeyCode.C))
-        //{
-        //    Debug.Log("Pressed");
-
-        //    DashAmount -= PressCost;
-        //    if (DashAmount < 0) DashAmount = 0;
-        //    DashBar.fillAmount = DashAmount / MaxDash;
-        //}
     }
 
     void FixedUpdate()
@@ -132,6 +113,9 @@ public class Movement : MonoBehaviour
 
         if (CoyoteTime.CurrentProgress == Cooldown.Progress.Finished)//don't need for walljump
             return;
+
+        if (_canJump )
+            jumpsound.Play();
 
 
         _canJump = false;
@@ -166,10 +150,17 @@ public class Movement : MonoBehaviour
         if (targetVelocity.x == 0)
         {
             _isRunning = false;
+
+            //if (runsound.isPlaying)
+            //    runsound.Stop();
         }
         else
         {
             _isRunning = true;
+                
+            //if (!runsound.isPlaying)
+            //    runsound.Play();
+            
         }
     }
 
@@ -240,32 +231,5 @@ public class Movement : MonoBehaviour
         canDash = true;
     }
 
-    public IEnumerator DashCooldown()
-    {
-        while (DashAmount < MaxDash)
-        {
-            DashAmount += MaxDash / dashingCooldown * Time.deltaTime; // Increase dash amount gradually during cooldown
-            DashBar.fillAmount = DashAmount / MaxDash;
-            yield return null;
-        }
-
-
-
-    }
-
-    //public IEnumerator RechargeDash()
-    //{
-    //    yield return new WaitForSeconds(2f);
-
-    //    while (DashAmount < MaxDash)
-    //    {
-    //        DashAmount += ChargeRate / 10f;
-    //        if (DashAmount > MaxDash) DashAmount = MaxDash;
-    //        DashBar.fillAmount = DashAmount / MaxDash;
-    //        yield return new WaitForSeconds(.1f);
-    //    }
-
-
-    //}
 }
 

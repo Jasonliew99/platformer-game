@@ -52,7 +52,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 4396026895775231627}
   - component: {fileID: 5141086929519780278}
   - component: {fileID: 5928195315656120398}
+  - component: {fileID: 1567509071107838177}
   m_Layer: 6
   m_Name: Chest
   m_TagString: Movable Object
@@ -204,3 +205,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   respawnPoint: {fileID: 0}
+--- !u!114 &1567509071107838177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2823825205487962497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_ComponentVersion: 1
+  m_HasRenderer: 0
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: 9b0cae3b00000000
+  m_ShapePath:
+  - {x: -0.38000107, y: -0.9750004, z: 0}
+  - {x: -0.38000107, y: -0.024997711, z: 0}
+  - {x: 0.55999947, y: -0.024997711, z: 0}
+  - {x: 0.55999947, y: -0.9750004, z: 0}
+  m_ShapePathHash: 0
+  m_Mesh: {fileID: 0}
+  m_InstanceId: 93780
+  m_LocalBounds:
+    m_Center: {x: 0.0899992, y: -0.49999905, z: 0}
+    m_Extent: {x: 0.47000027, y: 0.47500134, z: 0}
