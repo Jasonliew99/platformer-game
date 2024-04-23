@@ -141,9 +141,6 @@ MonoBehaviour:
   GroundLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  WallLayerMask:
-    serializedVersion: 2
-    m_Bits: 128
   FlipAnim: 0
 --- !u!82 &7231661918933169035
 AudioSource:

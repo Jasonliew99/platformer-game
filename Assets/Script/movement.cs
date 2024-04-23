@@ -24,14 +24,27 @@ public class Movement : MonoBehaviour
     public float GroundCheckRadius = 1f;
     public float MaxSlopeAngle = 45f;
 
+    //private RaycastHit2D _slopeHit;
+    //private RaycastHit2D _slopeHitFront;
+    //private RaycastHit2D _slopeHitBack;
+    //public bool IsOnSlope = false;
+
+    //public PhysicsMaterial2D Default;
+    //public PhysicsMaterial2D FullFriction;
+
+    //private float _slopeSideAngle = 0f;
+    //private float _slopeDownAngle = 0f;
+    //private float _lastSlopAngle = 0f;
+    //private bool _canWalkOnSlope = false;
+
+    //private Vector2 _slopeNormalPerpendicular = Vector2.zero;
+
     public Cooldown CoyoteTime;
     public Cooldown BufferJump;
 
     public LayerMask GroundLayerMask;
-    public LayerMask WallLayerMask;
 
     AudioSource jumpsound;
-    AudioSource runsound;
 
     protected bool _isGrounded = false;
     protected bool _isJumping = false;
@@ -44,6 +57,9 @@ public class Movement : MonoBehaviour
 
     protected Rigidbody2D _rigidbody2D;
     protected Collider2D _collider2D;
+
+    //private float m_MovementSmoothing = .05f;
+    //private Vector3 m_Velocity = Vector3.zero;
 
     public bool IsJumping
     {
@@ -93,6 +109,12 @@ public class Movement : MonoBehaviour
 
         CheckGround();
 
+        if (_isGrounded)
+        {
+            _canJump = true;
+        }
+        //CheckSlope();
+
         HandleMovement();
 
         Flip();
@@ -106,7 +128,7 @@ public class Movement : MonoBehaviour
     protected virtual void DoJump()
     {
         //we need to do cooldown check
-        TryBufferJump();
+        //TryBufferJump();
 
         if (!_canJump)
             return;
@@ -129,12 +151,47 @@ public class Movement : MonoBehaviour
 
     protected void TryBufferJump()
     {
+
         BufferJump.StartCooldown();
     }
 
     protected virtual void HandleMovement()
     {
+        if (_rigidbody2D == null)
+            return;
+
         Vector3 targetVelocity = Vector3.zero;
+
+        //if (IsGrounded && !IsOnSlope && !IsJumping)
+        //{
+        //    targetVelocity = new Vector2(_inputDirection.x * (Acceleration), 0f);
+        //    _rigidbody2D.velocity = Vector3.SmoothDamp(_rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
+
+        //}
+        //else if (IsGrounded && IsOnSlope && _canWalkOnSlope && !IsJumping)
+        //{
+        //    targetVelocity = new Vector2(-_inputDirection.x * (Acceleration) * _slopeNormalPerpendicular.x,
+        //        -_inputDirection.x * (Acceleration) * _slopeNormalPerpendicular.y);
+        //    _rigidbody2D.velocity = Vector3.SmoothDamp(_rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
+
+        //}
+        //else if (!IsGrounded)
+        //{
+        //    targetVelocity = new Vector2(_inputDirection.x * (Acceleration), _rigidbody2D.velocity.y);
+        //    _rigidbody2D.velocity = Vector3.SmoothDamp(_rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
+        //}
+
+
+        //if (targetVelocity.x == 0)
+        //{
+        //    _isRunning = false;
+        //}
+        //else
+        //{
+        //    _isRunning = true;
+        //}
+
+        //Vector3 targetVelocity = Vector3.zero;
 
         if (_isGrounded && !_isJumping)
         {
@@ -151,16 +208,11 @@ public class Movement : MonoBehaviour
         {
             _isRunning = false;
 
-            //if (runsound.isPlaying)
-            //    runsound.Stop();
         }
         else
         {
             _isRunning = true;
-                
-            //if (!runsound.isPlaying)
-            //    runsound.Play();
-            
+
         }
     }
 
@@ -190,6 +242,7 @@ public class Movement : MonoBehaviour
 
             if (BufferJump.CurrentProgress is Cooldown.Progress.Started or Cooldown.Progress.InProgress)
             {
+                Debug.Log("Buffer jump");
                 DoJump();
             }
 
@@ -199,6 +252,79 @@ public class Movement : MonoBehaviour
         if (!_isGrounded && !_isJumping && CoyoteTime.CurrentProgress == Cooldown.Progress.Ready)
             CoyoteTime.StartCooldown();
     }
+
+    //protected void CheckSlope()
+    //{
+    //    CheckSlopeHorizontal();
+    //    CheckSlopeVertical();
+    //}
+
+    //protected void CheckSlopeHorizontal()
+    //{
+    //    _slopeHitFront = Physics2D.Raycast(GroundCheck.position, Vector2.right, 1f, GroundLayerMask);
+    //    _slopeHitBack = Physics2D.Raycast(GroundCheck.position, Vector2.left, 1f, GroundLayerMask);
+
+    //    if (_slopeHitFront)
+    //    {
+    //        IsOnSlope = true;
+    //        _slopeSideAngle = Vector2.Angle(Vector2.up, _slopeHitFront.normal);
+    //    }
+    //    else if (_slopeHitBack)
+    //    {
+    //        IsOnSlope = true;
+    //        _slopeSideAngle = Vector2.Angle(Vector2.up, _slopeHitBack.normal);
+    //    }
+    //    else
+    //    {
+    //        _slopeSideAngle = 0f;
+    //        IsOnSlope = false;
+    //    }
+
+    //}
+
+    //protected void CheckSlopeVertical()
+    //{
+    //    _slopeHit = Physics2D.Raycast(GroundCheck.position, Vector2.down, 1f, GroundLayerMask);
+
+    //    if (_slopeHit)
+    //    {
+    //        _slopeNormalPerpendicular = Vector2.Perpendicular(_slopeHit.normal).normalized;
+
+    //        _slopeDownAngle = Vector2.Angle(_slopeHit.normal, Vector2.up);
+
+    //        if (_slopeDownAngle != _lastSlopAngle)
+    //        {
+    //            IsOnSlope = true;
+    //        }
+
+    //        _lastSlopAngle = _slopeDownAngle;
+
+    //        Debug.DrawRay(_slopeHit.point, _slopeNormalPerpendicular, Color.blue);
+    //        Debug.DrawRay(_slopeHit.point, _slopeHit.normal, Color.green);
+    //    }
+
+    //    if (_slopeDownAngle > MaxSlopeAngle || _slopeSideAngle > MaxSlopeAngle)
+    //    {
+    //        _canWalkOnSlope = false;
+    //    }
+    //    else
+    //    {
+    //        _canWalkOnSlope = true;
+    //    }
+
+    //    if (IsOnSlope && _canWalkOnSlope && _inputDirection.x == 0)
+    //    {
+    //        _rigidbody2D.sharedMaterial = FullFriction;
+    //    }
+    //    else if ( _inputDirection.x == 0)
+    //    {
+    //        _rigidbody2D.sharedMaterial = FullFriction;
+    //    }
+    //    else
+    //    {
+    //        _rigidbody2D.sharedMaterial = Default;
+    //    }
+    //}
 
     protected virtual void Flip()
     {

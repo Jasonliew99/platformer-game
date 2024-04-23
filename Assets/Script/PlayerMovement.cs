@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static System.Runtime.CompilerServices.RuntimeHelpers;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : Movement
 {
@@ -14,22 +15,31 @@ public class PlayerMovement : Movement
 
         _inputDirection = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
-        if (Input.GetButton("Jump"))
+        if (Input.GetButtonDown("Jump"))
         {
             DoJump();
             _isJumping = true;
         }
-        else
-        {
-            _isJumping = false;
-        }
+        //else
+        //{
+        //    _isJumping = false;
+        //}
 
-        if (Input.GetKeyDown(KeyCode.C) && canDash)
+
+                if (Input.GetKeyDown(KeyCode.RightShift) && canDash)
         {
             StartCoroutine(Dash());
 
         }
 
+        if (Input.GetButtonUp("Jump") )
+        {
+            _canJump = false;
+        }
 
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 }

@@ -48,8 +48,8 @@ MonoBehaviour:
   m_LightType: 3
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
-  m_Color: {r: 0.34591186, g: 0, b: 0, a: 1}
-  m_Intensity: 17.76
+  m_Color: {r: 0.19496846, g: 0.013319877, b: 0.003065522, a: 1}
+  m_Intensity: 14.59
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
   m_ApplyToSortingLayers: 9b0cae3b00000000
@@ -71,7 +71,7 @@ MonoBehaviour:
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
-  m_PointLightOuterRadius: 2.62
+  m_PointLightOuterRadius: 1.79
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
   m_ShapeLightParametricRadius: 1
@@ -139,7 +139,7 @@ Transform:
   m_GameObject: {fileID: 4085550471732850638}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.095, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -187,7 +187,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 2f893162463a6d84d998562113f9c138, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.41515437, b: 0.380503, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -208,8 +208,9 @@ GameObject:
   - component: {fileID: 9011414706231849427}
   - component: {fileID: 7170899291430511413}
   - component: {fileID: 1412925665640067937}
-  - component: {fileID: 7562647370331354326}
-  - component: {fileID: 51054415779229199}
+  - component: {fileID: 5928734755904058941}
+  - component: {fileID: 6666810877931527118}
+  - component: {fileID: 5939921923517441112}
   m_Layer: 0
   m_Name: Enemy 1
   m_TagString: Enemy
@@ -226,7 +227,7 @@ Transform:
   m_GameObject: {fileID: 5439257294411149147}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.89, y: -6.26, z: 0.03953453}
+  m_LocalPosition: {x: 3.06, y: 2.57, z: 0.03953453}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -267,7 +268,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.1}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -278,7 +279,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.41, y: 1.37}
+  m_Size: {x: 0.97, y: 1.21}
   m_EdgeRadius: 0
 --- !u!50 &1412925665640067937
 Rigidbody2D:
@@ -292,10 +293,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 50
+  m_Mass: 15
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 5
+  m_GravityScale: 6
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -307,7 +308,37 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &7562647370331354326
+--- !u!114 &5928734755904058941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5439257294411149147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_ComponentVersion: 1
+  m_HasRenderer: 0
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: 9b0cae3b00000000
+  m_ShapePath:
+  - {x: -0.625, y: -0.54999995, z: 0}
+  - {x: -0.625, y: 0.75000024, z: 0}
+  - {x: 0.625, y: 0.75000024, z: 0}
+  - {x: 0.625, y: -0.54999995, z: 0}
+  m_ShapePathHash: 0
+  m_Mesh: {fileID: 0}
+  m_InstanceId: -116428
+  m_LocalBounds:
+    m_Center: {x: 0, y: 0.10000014, z: 0}
+    m_Extent: {x: 0.625, y: 0.6500001, z: 0}
+--- !u!114 &6666810877931527118
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -319,18 +350,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbb267f3a7fac6e498bfb19e7f8f81fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Acceleration: 11
-  JumpForce: 10
+  Acceleration: 10
+  JumpForce: 30
   canDash: 1
   isDashing: 0
   dashingPower: 24
   dashingTime: 0.2
   dashingCooldown: 0
-  DashBar: {fileID: 0}
-  DashAmount: 0
-  MaxDash: 0
-  PressCost: 0
-  ChargeRate: 0
   GroundCheck: {fileID: 6377065591109901825}
   GroundCheckRadius: 1
   MaxSlopeAngle: 45
@@ -343,13 +369,10 @@ MonoBehaviour:
   GroundLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  WallLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
   FlipAnim: 0
   Target: {fileID: 0}
   Player: {fileID: 0}
---- !u!114 &51054415779229199
+--- !u!114 &5939921923517441112
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
